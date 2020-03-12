@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.mapper.OrdesMapper">
+    <select id="findProductOreders" resultType="com.hwua.pojo.Orders">
+        select id,orderNum,orderTime,peopleCount,orderDesc,payType,orderStatus,productId,memberId from orders where productId = #{id}
+    </select>
+    <select id="findAllOrders" resultMap="findOrder">
+        select *,p.id from orders o ,product p where o.productId=p.id
+    </select>
+    <resultMap id="findOrder" type="com.hwua.pojo.Orders">
+        <id property="id" column="id" />
+        <result property="orderTime" column="orderTime"/>
+        <result property="orderNum" column="orderNum"/>
+        <result property="peopleCount" column="peopleCount"/>
+        <result property="orderDesc" column="orderDesc"/>
+        <result property="payType" column="payType"/>
+        <result property="orderStatus" column="orderStatus"/>
+        <result property="productId" column="productId"/>
+        <result property="memberId" column="memberId"/>
+
+        <association property="product" javaType="com.hwua.pojo.Product">
+            <id property="id" column="p.id"></id>
+            <result property="productNum" column="productNum"/>
+            <result property="productName" column="productName"/>
+            <result property="cityName" column="cityName"/>
+            <result property="departureTime" column="departureTime"/>
+            <result property="productPrice" column="productPrice"/>
+            <result property="productDesc" column="productDesc"/>
+            <result property="productStatus" column="productStatus"/>
+        </association>
+        <collection property="member" ofType="com.hwua.pojo.Member" select="com.hwua.mapper.MemberMapper.findMemberById" column="memberId" fetchType="eager"></collection>
+        <collection property="travellers" javaType="List" ofType="com.hwua.pojo.Traveller" select="com.hwua.mapper.TravellerMapper.findTravellerById" column="id" fetchType="eager"></collection>
+    </resultMap>
+
+    <select id="findOrderById" resultMap="findOrderById">
+       select *,p.id from orders o ,product p where o.productId=p.id and o.id=#{id}
+    </select>
+    <resultMap id="findOrderById" type="com.hwua.pojo.Orders">
+        <id property="id" column="id" />
+        <result property="orderTime" column="orderTime"/>
+        <result property="orderNum" column="orderNum"/>
+        <result property="peopleCount" column="peopleCount"/>
+        <result property="orderDesc" column="orderDesc"/>
+        <result property="payType" column="payType"/>
+        <result property="orderStatus" column="orderStatus"/>
+        <result property="productId" column="productId"/>
+        <result property="memberId" column="memberId"/>
+
+        <association property="product" javaType="com.hwua.pojo.Product">
+            <id property="id" column="p.id"></id>
+            <result property="productNum" column="productNum"/>
+            <result property="productName" column="productName"/>
+            <result property="cityName" column="cityName"/>
+            <result property="departureTime" column="departureTime"/>
+            <result property="productPrice" column="productPrice"/>
+            <result property="productDesc" column="productDesc"/>
+            <result property="productStatus" column="productStatus"/>
+        </association>
+        <collection property="member" ofType="com.hwua.pojo.Member" select="com.hwua.mapper.MemberMapper.findMemberById" column="memberId" fetchType="eager"></collection>
+        <collection property="travellers" javaType="List" ofType="com.hwua.pojo.Traveller" select="com.hwua.mapper.TravellerMapper.findTravellerById" column="id" fetchType="eager"></collection>
+    </resultMap>
+
+    <delete id="deleteOrderById">
+        delete from orders where id=#{id}
+    </delete>
+</mapper>

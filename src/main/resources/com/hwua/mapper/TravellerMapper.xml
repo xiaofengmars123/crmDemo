@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.mapper.TravellerMapper">
+    <select id="findTravellerById" resultType="com.hwua.pojo.Traveller">
+      select t.id,name,sex,phoneNum,credentialsType,credentialsNum,travellerType from traveller t left join order_traveller ot on ot.travellerId=t.id where ot.orderID=#{id}
+    </select>
+</mapper>

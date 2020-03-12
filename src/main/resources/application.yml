@@ -1,0 +1,29 @@
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+    view:
+      prefix: /pages/
+      suffix: .jsp
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/crm?serverTimezone=UTC
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      web-stat-filter:
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+mybatis:
+  mapper-locations: classpath:com/hwua/mapper/*.xml
+  type-aliases-package: com.hwua.pojo
+  configuration:
+    lazy-loading-enabled: true
+
+pagehelper:
+  reasonable: true
+  auto-dialect: mysql
+
+

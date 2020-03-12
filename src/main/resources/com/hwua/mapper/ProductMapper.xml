@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.mapper.ProductMapper">
+    <select id="findAllProduct"  resultMap="product">
+        select * from product
+    </select>
+    <resultMap id="product" type="com.hwua.pojo.Product">
+        <id property="id" column="id"></id>
+        <result property="productNum" column="productNum"/>
+        <result property="cityName" column="cityName"/>
+        <result property="departureTime" column="departureTime"/>
+        <result property="productPrice" column="productPrice"/>
+        <result property="productDesc" column="productDesc"/>
+        <result property="productStatus" column="productStatus"/>
+        <collection property="ordersList" javaType="list" ofType="com.hwua.pojo.Orders" select="com.hwua.mapper.OrdesMapper.findProductOreders" column="id" fetchType="eager"></collection>
+
+    </resultMap>
+
+
+    <insert id="addProduct">
+        insert into product values (REPLACE(UUID(),"-",""),#{productNum},#{productName},#{cityName},#{departureTime},#{productPrice},#{productDesc},#{productStatus})
+    </insert>
+
+
+    <select id="findProductById" resultMap="productOrdes">
+        select * from product where id=#{id}
+    </select>
+        <resultMap id="productOrdes" type="com.hwua.pojo.Product">
+        <id property="id" column="id"></id>
+        <result property="productNum" column="productNum"/>
+        <result property="cityName" column="cityName"/>
+        <result property="departureTime" column="departureTime"/>
+        <result property="productPrice" column="productPrice"/>
+        <result property="productDesc" column="productDesc"/>
+        <result property="productStatus" column="productStatus"/>
+        <collection property="ordersList" javaType="list" ofType="com.hwua.pojo.Orders" select="com.hwua.mapper.OrdesMapper.findProductOreders" column="id" fetchType="eager"></collection>
+        </resultMap>
+
+    <delete id="deleteProductById" >
+        delete from product where id=#{id}
+    </delete>
+
+    <update id="updateProductsStatus">
+        update product set productStatus = #{status}
+        where id in
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
