@@ -150,7 +150,7 @@
 		var ctxPath;
 		var isFirst=true;
 		$(function () {
-			showMsgs(1, 2);
+			showMsgs(1, 4);
 
 		//查询短消息的函数
 		function showMsgs(pageNum, pageSize) {
@@ -175,7 +175,7 @@
 							"<td>"+order.orderTime+"</td>\n" +
 							"<td class=\"text-center\">"+product.productPrice+"</td>\n" +
 							"<td class=\"text-center\">"+product.productDesc+"</td>\n" +
-							"<td class=\"text-center\">"+(order.productStatus>0?'开启':'关闭')+"</td>\n" +
+							"<td class=\"text-center\">"+(order.orderStatus>0?'开启':'关闭')+"</td>\n" +
 							"\t\t\t\t\t\t\t\t\t\t\t<td class=\"text-center\">\n" +
 							"\t\t\t\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn bg-olive btn-xs\">订单</button>\n" +
 							"\t\t\t\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn bg-olive btn-xs\" onclick=\"location.href='${pageContext.request.contextPath}/findOrderById/"+order.id+"'\">详情</button>\n" +
@@ -247,6 +247,64 @@
 			},window.location.reload())
 		}
 
+			$("#open").click(function () {
+				var status=1;
+				var orderNums="";
+				var temp="";
+				var a= document.getElementsByName("ids");
+				for(var i=0;i<a.length;i++){
+					if(a[i].checked){
+						temp=a[i].value;
+						if(orderNums==null){
+							orderNums=temp;
+						}else {
+							orderNums=orderNums+","+temp;
+
+						}
+					}
+				}
+				updataProduct(orderNums,status)
+			});
+			$("#btn_close").click(function () {
+				var status=0;
+				var orderNums="";
+				var temp="";
+				var a= document.getElementsByName("ids");
+				for(var i=0;i<a.length;i++){
+					if(a[i].checked){
+						temp=a[i].value;
+						if(orderNums==null){
+							orderNums=temp;
+
+						}else {
+							orderNums=orderNums+","+temp;
+
+						}
+					}
+				}
+				updataProduct(orderNums,status)
+			});
+
+
+
+
+
+			function updataProduct(orderNums,status) {
+				$.ajax({
+					url : "/crm/updateOrders",
+					type:"post",
+					traditional: true,
+					dataType : "json",
+					data : {
+						"_method":"put",
+						"productNums" : orderNums,
+						"status":status
+					}
+				},function (data) {
+
+				},window.location.reload())
+			}
+
 
 
 	})
@@ -310,10 +368,10 @@
 										<button type="button" class="btn btn-default" title="删除" id="delete">
 										<i class="fa fa-trash-o"></i> 删除
 									</button>
-										<button type="button" class="btn btn-default" title="开启">
+										<button type="button" class="btn btn-default" title="开启" id="open">
 											<i class="fa fa-check"></i> 开启
 										</button>
-										<button type="button" class="btn btn-default" title="屏蔽">
+										<button type="button" class="btn btn-default" title="屏蔽" id="btn_close">
 											<i class="fa fa-ban"></i> 屏蔽
 										</button>
 										<button type="button" class="btn btn-default" title="刷新">

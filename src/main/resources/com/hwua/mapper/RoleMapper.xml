@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.mapper.RoleMapper">
+    <select id="findRoleById" resultMap="role">
+        select id,roleName,roleDesc from role r left join users_role on roleId=id where userid=#{id}
+    </select>
+
+    <resultMap id="role" type="com.hwua.pojo.Role">
+        <id property="id" column="id"/>
+        <result property="roleName" column="roleName"/>
+        <result property="roleDesc" column="roleDesc"/>
+    <collection property="permissions" select="com.hwua.mapper.PermissionMapper.findPermissionById" ofType="com.hwua.pojo.Permission" javaType="list" column="id" fetchType="lazy"/>
+    </resultMap>
+</mapper>

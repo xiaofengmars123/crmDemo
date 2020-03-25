@@ -35,7 +35,7 @@
         <result property="productPrice" column="productPrice"/>
         <result property="productDesc" column="productDesc"/>
         <result property="productStatus" column="productStatus"/>
-        <collection property="ordersList" javaType="list" ofType="com.hwua.pojo.Orders" select="com.hwua.mapper.OrdesMapper.findProductOreders" column="id" fetchType="eager"></collection>
+        <collection property="ordersList" javaType="list" ofType="com.hwua.pojo.Orders" select="com.hwua.mapper.OrdesMapper.findProductOreders" column="id" fetchType="lazy"></collection>
         </resultMap>
 
     <delete id="deleteProductById" >

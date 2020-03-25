@@ -7,10 +7,7 @@ import com.hwua.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -25,25 +22,30 @@ public class OrderController {
     public PageInfo<Orders> findAllOrders(@PathVariable("pageNum")Integer pageNum,@PathVariable("pageSize") Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<Orders> allOrders = ordersService.findAllOrders();
-        System.out.println(allOrders);
         PageInfo<Orders> pageInfo =new PageInfo<>(allOrders);
         return pageInfo;
     }
 
     @GetMapping("findOrderById/{id}")
     public String findOrderById(@PathVariable("id")String id, Map<String,Object> map){
-        System.out.println("Controller启动！！！Order");
+        System.out.println("Controller====findOrderById");
         Orders orderById = ordersService.findOrderById(id);
-        System.out.println(orderById);
         map.put("orders",orderById);
-        return "orders-show";
+        return "pages/orders-show";
     }
     @DeleteMapping("/deleteOrder")
     @ResponseBody
-    public String delectProduct(String orderNums){
+    public String deleteOrder(String orderNums){
         String[] split = orderNums.split(",");
         ordersService.deleteOrderById(split);
         return "order-page-list";
+    }
+    @PutMapping("/updateOrders")
+    public String dateOrder(String productNums,String status){
+        System.out.println(productNums+","+status);
+        String[] split = productNums.split(",");
+       ordersService.updateOrder(split,status);
+       return null;
     }
 
 }

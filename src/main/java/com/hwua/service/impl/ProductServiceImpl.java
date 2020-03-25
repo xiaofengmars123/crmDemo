@@ -2,6 +2,7 @@ package com.hwua.service.impl;
 
 import com.hwua.mapper.ProductMapper;
 import com.hwua.pojo.Product;
+import com.hwua.service.LuceneService;
 import com.hwua.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
+
     @Override
     public List<Product> findAllProduct() {
         return productMapper.findAllProduct();

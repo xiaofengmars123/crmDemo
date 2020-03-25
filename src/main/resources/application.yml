@@ -4,7 +4,7 @@ spring:
       filter:
         enabled: true
     view:
-      prefix: /pages/
+      prefix: /
       suffix: .jsp
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -25,5 +25,7 @@ mybatis:
 pagehelper:
   reasonable: true
   auto-dialect: mysql
+
+
 
 

@@ -118,6 +118,7 @@
 <script>
     var ctxPath;
     var isFirst=true;
+
     $(function () {
 
             showMsgs(1, 2);
@@ -177,6 +178,7 @@
             }
             updataProduct(productNums,status)
         });
+
         $("#btn_close").click(function () {
             var status=0;
             var productNums="";
@@ -219,8 +221,8 @@
 
 
 
-
     });
+
 
 
     //查询短消息的函数
@@ -288,6 +290,55 @@
         $("#refresh").click(function () {
             window.location.reload()
         })
+
+    $(function () {
+
+        //搜索框
+        $('#key').focus(function() {
+            if($(this).val() == '请输入关键词！') {
+                $(this).val("");
+            }
+        });
+        $('#key').blur(function(){
+            if($(this).val() == "") {
+                $(this).val('请输入关键词！');
+            }
+            var keyWord=$(this).val()
+            $.get("${pageContext.request.contextPath}/productSearch/"+keyWord,function (data) {
+                alert(data)
+                var $tbody = $("#tbody");
+                $tbody.empty();
+                $("#Pagination").empty();
+                for (var i=0;i<data.length;i++){
+                    var uid=1+i;
+                    var $tr="<tr></tr>";
+                    var product=data[i];
+                    var $td=$(
+                        " <td><input name=\"ids\" type=\"checkbox\" value="+product.id+"></td>\n" +
+                        "<td style=\"display:none\" name=ids>"+product.id+"</td>\n"+
+                        "<td>"+uid+"</td>\n" +
+                        "<td>"+product.productNum+"\n" +
+                        "</td>\n" +
+                        "<td>"+product.productName+"</td>\n" +
+                        "<td>"+product.cityName+"</td>\n" +
+                        "<td>"+product.departureTime+"</td>\n" +
+                        "<td class=\"text-center\">"+product.productPrice+"</td>\n" +
+                        "<td class=\"text-center\">"+product.productDesc+"</td>\n" +
+                        "<td class=\"text-center\">"+(product.productStatus>0?'开启':'关闭')+"</td>\n" +
+                        "<td class=\"text-center\">\n" +
+                        "<button type=\"button\" class=\"btn bg-olive btn-xs \" onclick=\"location.href='${pageContext.request.contextPath}/findOrdersByProductId/"+product.id+"'\">订单</button>\n" +
+                        "<button type=\"button\" class=\"btn bg-olive btn-xs\">详情</button>\n" +
+                        "<button type=\"button\" class=\"btn bg-olive btn-xs\">编辑</button>\n" +
+                        "</td>\n"
+                    );
+                    $("#tbody").append($tr).append($td);
+                }
+            })
+        });
+    });
+
+
+
 
 </script>
 
@@ -364,8 +415,13 @@
                         </div>
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="搜索">
-                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+
+                                <form action="" method="post">
+                                    <input  type="text" value="请输入关键词！"  id="key" />
+                                    <input type="submit" name="submit" value="提交" />
+                                </form>
+
+
                             </div>
                         </div>
                         <!--工具栏/-->
